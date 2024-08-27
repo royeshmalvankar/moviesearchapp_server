@@ -90,21 +90,23 @@ movieRoutes.get("/search",authRole("USER","ADMIN"), async (req, res) => {
     }
 })
 
-movieRoutes.put("updatemovie/:id",authRole("ADMIN"), async (req, res) => {
-    const {title,year,type,rating,genre,poster,actors} = req.body
+movieRoutes.put("putmovie/:id",authRole("ADMIN"), async (req, res) => {
+    const {title,year,type,imdbID,rating,genre,poster,actors} = req.body
     const {id} = req.params
     try {
         let updatedMovie = await MovieModel.findByIdAndUpdate({ _id:id},
             {
                 title,
                 year,
+                imdbID,
                 type,
                 rating,
-                genre:genre.split(","),
+                genre,
                 poster,
-                actors:actors.split(","),
+                actors,
             }
         )
+        await updatedMovie.save()
         res.status(200)
         res.json({"message":"success data updated successfully","data":updatedMovie})
     } catch (error) {
@@ -113,21 +115,23 @@ movieRoutes.put("updatemovie/:id",authRole("ADMIN"), async (req, res) => {
     }
 })
 
-movieRoutes.patch("/update/:id",authRole("ADMIN"), async (req, res) => {
-    const {title,year,type,rating,genre,poster,actors} = req.body
+movieRoutes.patch("/updatemovie/:id",authRole("ADMIN"), async (req, res) => {
+    const {title,year,type,imdbID,rating,genre,poster,actors} = req.body
     const {id} = req.params
     try {
         const patchdata = await MovieModel.findByIdAndUpdate({ _id:id},
             {
                 title,
                 year,
+                imdbID,
                 type,
                 rating,
-                genre:genre.split(","),
+                genre,
                 poster,
-                actors:actors.split(","),
+                actors,
             }
         )
+        await patchdata.save()
         res.status(200)
         res.json({"message":"success data updated successfully","data":patchdata})
     } catch (error) {

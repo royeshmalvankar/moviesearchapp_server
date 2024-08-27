@@ -73,8 +73,12 @@ userRoute.get("/logout", async (req, res) => {
 })
 
 userRoute.get("/profile",verifyToken, async (req, res) => {
-    const user = await UserModel.find({_id:req.user.id});
-    res.json({user});
+   try {
+     const user = await UserModel.findOne({_id:req.user.id});
+     res.json({user});
+   } catch (error) {
+       res.status(400).json({"message":error})
+   }
 })
 
 
