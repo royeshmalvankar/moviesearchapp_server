@@ -44,7 +44,7 @@ userRoute.post("/login", async (req, res) => {
                  res.json({message:"something went wrong by comparing password",error:err});
              }
              if(result){
-                 const token = jwt.sign({ role:user.role,id:user._id}, process.env.Key);
+                 const token = jwt.sign({ role:user.role,id:user._id}, process.env.Key, {expiresIn:"1h"});
                  res.json({message:"login successfully",token:token});
              }else{
                  res.json({message:"wrong password"});
