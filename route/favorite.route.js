@@ -5,7 +5,7 @@ import FavMovieModel from "../model/favorites.model.js"
 
 const favoriteRoutes = express.Router()
 
-favoriteRoutes.post("/addfav",authRole("ADMIN"), async(req, res) => {
+favoriteRoutes.post("/addfav",authRole("ADMIN","USER"), async(req, res) => {
     try {
         let MovieAuth = await FavMovieModel.find({imdbID:req.body.imdbID}) 
         if(MovieAuth.length!==0){
@@ -47,7 +47,7 @@ favoriteRoutes.get("/favall",authRole("USER","ADMIN"),async(req,res)=>{
     }
 })
 
-favoriteRoutes.delete("/delete/:id",authRole("ADMIN"),async(req,res)=>{
+favoriteRoutes.delete("/delete/:id",authRole("ADMIN","USER"),async(req,res)=>{
     try {
         await FavMovieModel.findByIdAndDelete(req.params.id)
         res.status(200)
